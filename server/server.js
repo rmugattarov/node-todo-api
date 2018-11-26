@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var _ = require('lodash');
 
 var {mongoose} = require('./db/mongoose');
 var {ObjectID} = require('mongodb');
@@ -48,6 +49,16 @@ app.get('/todos/:id', (req, res) => {
     res.status(404).send();
   });
 
+});
+
+app.post('/users', (req, res) => {
+  var user = new User(_.pick(req.body, ['email','password']));
+  return user.save().then((doc) => {
+    res.send(200);
+  }, (e) => {
+    console.log(e);
+    res.send(500);
+  });
 });
 
 app.listen(port, () => {
