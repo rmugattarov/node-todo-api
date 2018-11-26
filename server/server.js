@@ -53,11 +53,10 @@ app.get('/todos/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
   var user = new User(_.pick(req.body, ['email','password']));
-  return user.save().then((doc) => {
+  return user.save().then((user) => {
     res.send(200);
-  }, (e) => {
-    console.log(e);
-    res.send(500);
+  }).catch((e) => {
+    res.status(400).send(e);
   });
 });
 
